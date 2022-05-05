@@ -1,0 +1,16 @@
+{
+"companyName": "Zoustec LTD.",
+"productName": "TrafficTainan",
+"productVersion": "1.0",
+"dataUrl": "MainMenu.data.unityweb",
+"wasmCodeUrl": "MainMenu.wasm.code.unityweb",
+"wasmFrameworkUrl": "MainMenu.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.37f1"
+}
