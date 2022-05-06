@@ -1,4 +1,3 @@
-const unityInstance = UnityLoader.instantiate("unityContainer", "Build/WebGL.json");
 let sceneEl;
 let arSystem;
 
@@ -12,25 +11,29 @@ window.addEventListener('load', (event) => {
 		
 	sceneEl.addEventListener("arReady", (event) => {
 		console.log("MindAR is ready", event)
-		unityInstance.SendMessage("DetectionManager", "arReady");
-
+		window.unityInstance.SendMessage("DetectionManager", "arReady");
 	});
 
 	sceneEl.addEventListener("arError", (event) => {
 		console.log("MindAR failed to start", event)
-		unityInstance.SendMessage("DetectionManager", "arError");
+		window.unityInstance.SendMessage("DetectionManager", "arError");
 	});
+	
+	aCanvas = document.querySelector('.a-canvas');
+	aCanvas.style.zIndex = "-1";
 });
 
 
 function cameraReady(){
     isCameraReady = true;
-    gl = unityInstance.Module.ctx;
-	arSystem.start();
+    gl = window.unityInstance.Module.ctx;
 }
 
 function detectionManagerReady(){
     isDetectionManagerReady = true;
+	sceneEl = document.querySelector('a-scene');
+	arSystem = sceneEl.systems["mindar-image-system"];
+	arSystem.start();
 }
 
 function createUnityMatrix(el){
@@ -65,14 +68,13 @@ AFRAME.registerComponent('markercontroller', {
         const serializedInfos = `${this.data.imageIndex},${this.el.object3D.visible},${position.toArray()},${rotation.toArray()},${scale.toArray()}`;
 		
         if(isDetectionManagerReady){
-          unityInstance.SendMessage("DetectionManager", "markerInfos", serializedInfos);
+          window.unityInstance.SendMessage("DetectionManager", "markerInfos", serializedInfos);
         }
     } 
 });
-
+/*
 AFRAME.registerComponent('cameratransform', {
     tock: function(time, timeDelta){
-
         let camtr = new THREE.Vector3();
         let camro = new THREE.Quaternion();
         let camsc = new THREE.Vector3();
@@ -86,9 +88,9 @@ AFRAME.registerComponent('cameratransform', {
         const rotCam = `${[...camro.toArray()]}`
  
         if(isCameraReady){
-            unityInstance.SendMessage("Main Camera", "setProjection", serializedProj);
-            unityInstance.SendMessage("Main Camera", "setPosition", posCam);
-            unityInstance.SendMessage("Main Camera", "setRotation", rotCam);
+            window.unityInstance.SendMessage("Main Camera", "setProjection", serializedProj);
+            window.unityInstance.SendMessage("Main Camera", "setPosition", posCam);
+            window.unityInstance.SendMessage("Main Camera", "setRotation", rotCam);
 
             let w = window.innerWidth;
             let h = window.innerHeight; 
@@ -102,7 +104,7 @@ AFRAME.registerComponent('cameratransform', {
 
             const size = `${w},${h}`
 
-            unityInstance.SendMessage("Canvas", "setSize", size);
+            window.unityInstance.SendMessage("Canvas", "setSize", size);
         }
 
         if(gl != null){
@@ -118,3 +120,4 @@ AFRAME.registerComponent('copycanvas', {
         unityCanvas.height = this.el.canvas.height
     } 
 });
+*/
